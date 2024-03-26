@@ -4,6 +4,7 @@ from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship, declarative_base
 from sqlalchemy import create_engine
 from eralchemy2 import render_er
+from sqlalchemy import Enum
 
 Base = declarative_base()
 
@@ -24,6 +25,42 @@ class Post(Base):
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
     user_id= Column(Integer)
+
+    user_id = Column(Integer , ForeignKey('user.id'))
+    User = relationship(User)
+
+class Follower(Base):
+    __tablename__ = 'follower'
+    
+    id = Column(Integer, primary_key= True )
+    user_from_id = Column(Integer)
+    user_to_id = Column(Integer)
+
+    user_id = Column(Integer , ForeignKey('user.id'))
+    User = relationship(User)
+    
+
+class Media(Base):
+    __tablename__ = 'media'
+    id = Column(Integer, primary_key= True)
+    type = Column(Enum('video','video'))
+    url = Column(String(250),nullable = False)
+    post_id = Column(Integer)
+
+    post_id = Column(Integer, ForeignKey('post.id'))
+    post = relationship (Post)
+
+class Comment(Base):
+    __tablename__ = 'comment'
+    id = Column(Integer, primary_key = True)
+    comment_text = Column(String(250),nullable = False)
+    author_id = Column(Integer)
+    post_id = Column(Integer)
+
+    user_id = Column(Integer , ForeignKey('user.id'))
+    User = relationship(User)
+    post_id = Column(Integer, ForeignKey('post.id'))
+    post = relationship(Post)
 
     def to_dict(self):
         return {}
