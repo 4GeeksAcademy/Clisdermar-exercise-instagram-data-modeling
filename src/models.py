@@ -34,20 +34,17 @@ class Follower(Base):
     
    
     user_from_id = Column(Integer, primary_key= True )
-    user_to_id = Column(Integer)
+   
 
-    user_id = Column(Integer , ForeignKey('user.id'))
+    user_to_id= Column(Integer , ForeignKey('user.id'))
     User = relationship("User")
 
 class Comment(Base):
     __tablename__ = 'comment'
     id = Column(Integer, primary_key = True)
     comment_text = Column(String(250),nullable = False)
-    author_id = Column(Integer)
-    post_id = Column(Integer)
-
-
-    user_id = Column(Integer , ForeignKey('user.id'))
+   
+    author_id = Column(Integer , ForeignKey('user.id'))
     User = relationship(User)
     
     post_id = Column(Integer, ForeignKey('post.id'))
@@ -61,7 +58,6 @@ class Media(Base):
     id = Column(Integer, primary_key= True)
     type = Column(Enum('video','video'))
     url = Column(String(250),nullable = False)
-    post_id = Column(Integer)
 
     post_id = Column(Integer, ForeignKey('post.id'))
     post = relationship (Post)
