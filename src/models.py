@@ -32,13 +32,29 @@ class Post(Base):
 class Follower(Base):
     __tablename__ = 'follower'
     
-    id = Column(Integer, primary_key= True )
-    user_from_id = Column(Integer)
+   
+    user_from_id = Column(Integer, primary_key= True )
     user_to_id = Column(Integer)
+
+    user_id = Column(Integer , ForeignKey('user.id'))
+    User = relationship("User")
+
+class Comment(Base):
+    __tablename__ = 'comment'
+    id = Column(Integer, primary_key = True)
+    comment_text = Column(String(250),nullable = False)
+    author_id = Column(Integer)
+    post_id = Column(Integer)
+
 
     user_id = Column(Integer , ForeignKey('user.id'))
     User = relationship(User)
     
+    post_id = Column(Integer, ForeignKey('post.id'))
+    post = relationship(Post)
+
+    def to_dict(self):
+        return {}
 
 class Media(Base):
     __tablename__ = 'media'
@@ -50,20 +66,7 @@ class Media(Base):
     post_id = Column(Integer, ForeignKey('post.id'))
     post = relationship (Post)
 
-class Comment(Base):
-    __tablename__ = 'comment'
-    id = Column(Integer, primary_key = True)
-    comment_text = Column(String(250),nullable = False)
-    author_id = Column(Integer)
-    post_id = Column(Integer)
 
-    user_id = Column(Integer , ForeignKey('user.id'))
-    User = relationship(User)
-    post_id = Column(Integer, ForeignKey('post.id'))
-    post = relationship(Post)
-
-    def to_dict(self):
-        return {}
 
 ## Draw from SQLAlchemy base
 try:
